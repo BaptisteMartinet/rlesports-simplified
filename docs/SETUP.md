@@ -78,8 +78,9 @@ npm run check:accounts -- --publish-welcome-story
 Open Instagram: the story should be there.
 
 **On GitHub**, after pushing:
-1. **Actions → Post → Run workflow**, keep **Dry run** checked. The run should succeed. Nothing is due before Dec 1, so it finds 0 posts; that's expected.
-2. **Actions → Keep alive → Run workflow**. It should succeed (and do nothing while the repo has recent commits).
+1. **Actions → Check accounts → Run workflow**. It runs the same check as on your computer, with the repository secrets, and publishes nothing. Both lines should show ✔.
+2. **Actions → Post → Run workflow**, keep **Dry run** checked. The run should succeed. Nothing is due before Dec 1, so it finds 0 posts; that's expected.
+3. **Actions → Keep alive → Run workflow**. It should succeed (and do nothing while the repo has recent commits).
 
 ## 6. Running it
 

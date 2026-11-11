@@ -252,6 +252,7 @@ state/posted.json
 .github/workflows/
   post.yml          # done: every 15 min; manual run = dry run with downloadable images
   keep-alive.yml    # done: empty commit when the repo has been quiet for 30 days
+  check-accounts.yml # done: manual check that the repository secrets work
 docs/SETUP.md       # account setup guide
 ```
 

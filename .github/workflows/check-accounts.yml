@@ -1,0 +1,31 @@
+name: Check accounts
+
+# Manual check that the repository secrets work: connects to Instagram and
+# Cloudinary with them, publishes nothing.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check Instagram and Cloudinary
+        run: npm run check:accounts
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+          IG_USERNAME: ${{ secrets.IG_USERNAME }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
