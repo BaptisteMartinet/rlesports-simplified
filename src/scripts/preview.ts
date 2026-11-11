@@ -3,7 +3,8 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { buildCaption } from '../captions.ts';
 import type { Match, RlEvent } from '../data/types.ts';
-import { renderPost } from '../render/index.ts';
+import { renderPost, toJpeg } from '../render/index.ts';
+import { profilePicture, welcomeStory } from '../render/templates.tsx';
 import type { DuePost, PostContent, PostFormat } from '../rules.ts';
 
 const OUT = 'out/preview';
@@ -70,4 +71,6 @@ for (const [name, formats, content] of samples) {
     if (caption) await writeFile(`${OUT}/${name}-${format}.txt`, caption);
   }
 }
+await writeFile(`${OUT}/profile-picture.jpg`, await toJpeg(profilePicture()));
+await writeFile(`${OUT}/welcome-story.jpg`, await toJpeg(welcomeStory()));
 console.log(`Preview written to ${OUT}/`);

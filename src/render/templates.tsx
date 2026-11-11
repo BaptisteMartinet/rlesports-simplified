@@ -235,3 +235,47 @@ export function postImages(post: DuePost, credits: string[]): ReactElement[] {
         : [roundupCover(c, 'story', credits)];
   }
 }
+
+/** Profile picture (square; Instagram shows it as a circle, so everything stays in the centre). */
+export function profilePicture(): ReactElement {
+  const side = 1080;
+  return (
+    <Box
+      style={{
+        width: side,
+        height: side,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundImage: `linear-gradient(135deg, ${colors.blue} 50%, ${colors.orange} 50%)`,
+      }}
+    >
+      <Box style={{ ...headline(440), letterSpacing: -8, marginTop: -40 }}>RL</Box>
+      <Box style={{ ...headline(96, colors.night), letterSpacing: 10, backgroundColor: colors.text, padding: '6px 28px', borderRadius: 16 }}>
+        SIMPLIFIED
+      </Box>
+    </Box>
+  );
+}
+
+/** One-off story introducing the account; also the first real publishing test. */
+export function welcomeStory(): ReactElement {
+  return (
+    <Frame
+      {...STORY}
+      label="HELLO"
+      title="Rocket League Esports Simplified"
+      subtitle="RLCS made simple, for new fans"
+      why="Follow for the big events, big matches and finals"
+      credits={[]}
+    >
+      <Box style={{ flexDirection: 'column', alignItems: 'center' }}>
+        {['Upcoming events', 'Big matches', 'Grand finals', 'Champions'].map((line, i) => (
+          <Box key={line} style={{ ...headline(110, i % 2 === 0 ? colors.blue : colors.orange), marginBottom: 24 }}>
+            {line}
+          </Box>
+        ))}
+      </Box>
+    </Frame>
+  );
+}

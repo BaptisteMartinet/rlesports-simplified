@@ -2,11 +2,13 @@
 //
 //   npm run dry-run                      render what's due now into out/run/, publish nothing
 //   NOW=2026-12-02T14:05:00Z npm run dry-run   pretend it's another moment
+//   npm start                            publish for real (needs IG_ACCESS_TOKEN and CLOUDINARY_URL)
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { buildCaption } from './captions.ts';
 import { createBotData } from './data/index.ts';
 import { topTeams } from './data/standings.ts';
 import type { Match } from './data/types.ts';
+import { createPublisher, type Publisher } from './publish/index.ts';
 import { renderPost } from './render/index.ts';
 import { duePosts } from './rules.ts';
 import { loadState, saveState } from './state.ts';
@@ -19,6 +21,8 @@ const OUT = 'out/run';
 const dryRun = process.env.DRY_RUN === '1';
 const now = process.env.NOW ? new Date(process.env.NOW) : new Date();
 if (Number.isNaN(now.getTime())) throw new Error(`Invalid NOW "${process.env.NOW}"`);
+// A fake date only makes sense for testing: never publish real posts early or late.
+if (process.env.NOW && !dryRun) throw new Error('NOW can only be used with DRY_RUN=1');
 
 const data = createBotData();
 const state = await loadState();
@@ -45,6 +49,9 @@ const due = duePosts({
 const batch = due.slice(0, MAX_POSTS_PER_RUN);
 console.log(`${now.toISOString()}: ${due.length} post(s) due${due.length > batch.length ? `, publishing ${batch.length} this run` : ''}.`);
 
+// Created on the first post only, so runs with nothing to post need no credentials.
+let publisher: Publisher | undefined;
+
 if (dryRun) {
   await rm(OUT, { recursive: true, force: true });
   await mkdir(OUT, { recursive: true });
@@ -64,8 +71,9 @@ for (const post of batch) {
     continue;
   }
 
-  // TODO: upload to Cloudinary, publish on Instagram, then delete from Cloudinary.
-  throw new Error('Publishing is not implemented yet. Use DRY_RUN=1.');
+  publisher ??= await createPublisher();
+  const mediaId = await publisher.publish({ format: post.format, images, caption });
   state.posted[post.key] = new Date().toISOString();
   await saveState(state); // after each post, so a crash mid-run never causes a repeat
+  console.log(`  published ${post.key} (media ${mediaId})`);
 }

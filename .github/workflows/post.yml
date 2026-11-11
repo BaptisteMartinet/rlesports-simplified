@@ -1,0 +1,62 @@
+name: Post
+
+on:
+  schedule:
+    - cron: '*/15 * * * *' # GitHub often starts these late; the rules allow for it
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run: render the due posts as a downloadable artifact, publish nothing'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write # commit state/posted.json
+
+concurrency:
+  group: post # never two runs at once; a new run waits for the current one
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run bot
+        run: npm start
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+          IG_USERNAME: ${{ secrets.IG_USERNAME }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+
+      - name: Upload dry-run images
+        if: env.DRY_RUN == '1'
+        uses: actions/upload-artifact@v7
+        with:
+          name: dry-run
+          path: out/run/
+          if-no-files-found: ignore
+
+      # Runs even if the bot failed halfway, so posts already published are never repeated.
+      - name: Save posted state
+        if: always() && env.DRY_RUN != '1'
+        run: |
+          git add state/posted.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore: update posted state'
+          git pull --rebase
+          git push
