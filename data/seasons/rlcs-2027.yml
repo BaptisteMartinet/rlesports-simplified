@@ -1,0 +1,168 @@
+# RLCS 2027 season, written by hand.
+#
+# RLCS 2027 uses a new format, the "RLCS Club Championship":
+#   1. Club Kick-Off Opens: 4 online regional qualifiers (one team each goes to London)
+#   2. Club Championship Kick-Off: LAN in London with 20 invited clubs + 4 qualifiers
+#   3. Regional online league play (dates and format not announced yet)
+#   4. Club Championship Finale: 16-team LAN (date and place not announced yet)
+#
+# Rules for editing:
+#   - Never change an event `id` once the bot has posted about it (it's how the bot remembers).
+#   - Dates are the event's local days (YYYY-MM-DD) in its `timezone`.
+#   - `status: tba` events are ignored by the posting rules until they get dates and `status: confirmed`.
+#   - Run `npm run data:check` after editing.
+#
+# Not added because unconfirmed (only a ticket resale listing, no official source):
+#   Major 1 (Feb 2027), Major 2 (May 2027), World Championship (Sep 2027).
+#   Source: https://www.koobit.com/major-1-e9817
+
+season: RLCS 2027
+updated: 2026-11-11
+
+# Used for the "top 10" big-match rule until the new season has its own points.
+# RLCS points are regional: the bot ranks all regions together by points.
+# Only the top 10 of each region is listed, which is enough for a world top 10.
+# OCE, APAC and SSA are left out: their points totals are far below this range.
+standings:
+  label: RLCS 2026 season points (World Championship qualification standings)
+  asOf: 2026-11-11
+  sources:
+    - https://blast.tv/rl/leaderboard/2026/world-championship/eu
+    - https://blast.tv/rl/leaderboard/2026/world-championship/na
+    - https://blast.tv/rl/leaderboard/2026/world-championship/sam
+    - https://blast.tv/rl/leaderboard/2026/world-championship/mena
+  regions:
+    EU:
+      - { team: Karmine Corp, points: 112 }
+      - { team: Gentle Mates, points: 101 }
+      - { team: Vitality, points: 97 }
+      - { team: Ninjas in Pyjamas, points: 60 }
+      - { team: Manchester City, points: 45 }
+      - { team: Geekay Esports, points: 25 }
+      - { team: Novo Esports, points: 17 }
+      - { team: Magnifico, points: 17 }
+      - { team: Kaydop Corp, points: 16 }
+      - { team: WIP Esports, points: 12 }
+    NA:
+      - { team: NRG, points: 90 }
+      - { team: Shopify Rebellion, points: 89 }
+      - { team: Spacestation, points: 69 }
+      - { team: FUT Esports, points: 51 }
+      - { team: Virtus.pro, points: 46 }
+      - { team: Gen.G Mobil1 Racing, points: 23 }
+      - { team: Dignitas, points: 22 }
+      - { team: M80, points: 14 }
+      - { team: Strictly Business, points: 12 }
+      - { team: "1", points: 11 }
+    SAM:
+      - { team: MIBR, points: 88 }
+      - { team: Furia, points: 86 }
+      - { team: BS+COMPETITION, points: 55 }
+      - { team: Team Secret, points: 38 }
+      - { team: Novadrift, points: 27 }
+      - { team: NuTorious, points: 26 }
+      - { team: Bigodes, points: 20 }
+      - { team: Dream Esports, points: 16 }
+      - { team: Enosis Esports, points: 10 }
+      - { team: Emerald, points: 10 }
+    MENA:
+      - { team: Twisted Minds, points: 105 }
+      - { team: Team Falcons, points: 78 }
+      - { team: R8 Esports, points: 61 }
+      - { team: DOS, points: 32 }
+      - { team: Rafha Esports, points: 31 }
+      - { team: Team Stallions, points: 26 }
+      - { team: Everything, points: 19 }
+      - { team: Alyom w ana b alsh8l, points: 17 }
+      - { team: Sleeping, points: 14 }
+      - { team: Nothing, points: 12 }
+
+events:
+  # --- Club Kick-Off Opens (online regional qualifiers, 16 teams, 3v3) ---
+  - id: rlcs-2027-kickoff-open-mena
+    name: RLCS Club Kick-Off Open MENA
+    kind: open
+    status: confirmed
+    online: true
+    region: MENA
+    startDate: 2026-11-12
+    endDate: 2026-11-14
+    timezone: Asia/Riyadh
+    teamCount: 16
+    sources:
+      - https://blast.tv/rl/tournaments
+      - https://www.chaseyoursport.com/esports/rlcs-club-kick-off-open-2027-schedule/13836
+
+  - id: rlcs-2027-kickoff-open-na
+    name: RLCS Club Kick-Off Open NA
+    kind: open
+    status: confirmed
+    online: true
+    region: NA
+    startDate: 2026-11-13
+    endDate: 2026-11-15
+    timezone: America/New_York
+    teamCount: 16
+    sources:
+      - https://blast.tv/rl/tournaments/rlcs-club-kick-off-open-na-2027
+      - https://www.chaseyoursport.com/esports/rlcs-club-kick-off-open-2027-schedule/13836
+
+  - id: rlcs-2027-kickoff-open-sam
+    name: RLCS Club Kick-Off Open SAM
+    kind: open
+    status: confirmed
+    online: true
+    region: SAM
+    startDate: 2026-11-13
+    endDate: 2026-11-15
+    timezone: America/Sao_Paulo
+    teamCount: 16
+    sources:
+      - https://blast.tv/rl/tournaments/rlcs-club-kick-off-open-sam-2027
+      - https://www.chaseyoursport.com/esports/rlcs-club-kick-off-open-2027-schedule/13836
+
+  - id: rlcs-2027-kickoff-open-eu
+    name: RLCS Club Kick-Off Open EU
+    kind: open
+    status: confirmed
+    online: true
+    region: EU
+    startDate: 2026-11-20
+    endDate: 2026-11-22
+    timezone: Europe/Paris
+    teamCount: 16
+    sources:
+      - https://blast.tv/rl/tournaments
+      - https://www.chaseyoursport.com/esports/rlcs-club-kick-off-open-2027-schedule/13836
+
+  # --- Club Championship Kick-Off (LAN) ---
+  # Invited clubs (20): Gentle Mates, Shopify Rebellion, Pioneers, Team Falcons, Twisted Minds,
+  # Spacestation, FUT Esports, FaZe Esports, All Gamers Global, PWR, Gen.G Mobil1 Racing, Vitality,
+  # Ninjas in Pyjamas, Wolves Esports, Karmine Corp, Manchester City, Furia, NRG, Wildcard,
+  # Team Heretics. Plus the 4 Open winners. Prize pool not announced yet.
+  - id: rlcs-2027-club-kickoff-london
+    name: RLCS Club Championship Kick-Off
+    kind: kickoff
+    status: confirmed
+    online: false
+    startDate: 2026-12-09
+    endDate: 2026-12-13
+    timezone: Europe/London
+    location: { venue: Copper Box Arena, city: London, country: United Kingdom }
+    teamCount: 24
+    hashtag: RLCSKickOff
+    sources:
+      - https://blast.tv/rl/tournaments/rlcs-club-championship-kick-off-2027
+
+  # --- Club Championship Finale (LAN) ---
+  # The London Kick-Off winner earns an extra Finale slot for its region.
+  - id: rlcs-2027-club-finale
+    name: RLCS Club Championship Finale
+    kind: finale
+    status: tba
+    online: false
+    timezone: UTC
+    teamCount: 16
+    sources:
+      - https://blast.tv/rl/tournaments/rlcs-club-championship-kick-off-2027
+      - https://www.chaseyoursport.com/esports/rlcs-club-kick-off-open-2027-schedule/13836
