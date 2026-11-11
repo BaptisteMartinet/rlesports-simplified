@@ -279,3 +279,88 @@ export function welcomeStory(): ReactElement {
     </Frame>
   );
 }
+
+const WELCOME_ITEMS: [string, string, string][] = [
+  ['Upcoming events', 'Reminders before every big LAN, from 2 months out to day one', colors.blue],
+  ['Big matches', 'When two of the top 10 teams in the world meet', colors.orange],
+  ['Grand finals', "Who's playing, and when, in your time zone", colors.blue],
+  ['Champions', 'Who lifted the trophy', colors.gold],
+];
+
+/** Welcome carousel (feed, 3 slides): who we are, what we post, what RLCS is + the next big event. */
+export function welcomeCarousel(nextEvent?: RlEvent): ReactElement[] {
+  const inner = FEED.width - 2 * PAD;
+  const cover = (
+    <Frame
+      {...FEED}
+      label="WELCOME"
+      title="Rocket League Esports Simplified"
+      subtitle="Unofficial fan account"
+      why="Swipe to see what we post"
+      credits={[]}
+    >
+      <Box style={{ flexDirection: 'column', alignItems: 'center' }}>
+        <Box style={headline(170, colors.blue)}>RLCS</Box>
+        <Box style={headline(170, colors.orange)}>MADE SIMPLE</Box>
+        <Box style={{ ...body(40, colors.muted), marginTop: 24 }}>for new Rocket League esports fans</Box>
+      </Box>
+    </Frame>
+  );
+
+  const whatWePost = (
+    <Frame {...FEED} label="WHAT WE POST" title="Only the big moments" subtitle="No filler, no spam" credits={[]}>
+      <Box style={{ flexDirection: 'column' }}>
+        {WELCOME_ITEMS.map(([title, text, color]) => (
+          <Box
+            key={title}
+            style={{
+              flexDirection: 'column',
+              padding: '22px 32px',
+              marginBottom: 20,
+              borderRadius: 24,
+              backgroundColor: 'rgba(255,255,255,0.06)',
+              borderLeft: `12px solid ${color}`,
+            }}
+          >
+            <Box style={headline(60)}>{title}</Box>
+            <Box style={{ ...body(30, colors.muted), marginTop: 8 }}>{text}</Box>
+          </Box>
+        ))}
+      </Box>
+    </Frame>
+  );
+
+  const whatIsRlcs = (
+    <Frame {...FEED} label="WHAT IS RLCS?" title="The pro league of Rocket League" subtitle="Rocket League Championship Series" credits={[]}>
+      <Box style={{ flexDirection: 'column', width: inner }}>
+        {[
+          'Teams of 3 play soccer with rocket-powered cars.',
+          'Pro teams compete all season in online tournaments.',
+          'The biggest moments are the LAN events: the best teams in the world, on stage, in front of a crowd.',
+        ].map((line) => (
+          <Box key={line} style={{ ...body(36), marginBottom: 26, lineHeight: 1.35 }}>
+            {line}
+          </Box>
+        ))}
+        {nextEvent ? (
+          <Box
+            style={{
+              flexDirection: 'column',
+              marginTop: 20,
+              padding: '24px 32px',
+              borderRadius: 24,
+              backgroundColor: 'rgba(255,255,255,0.06)',
+              borderLeft: `12px solid ${colors.orange}`,
+            }}
+          >
+            <Box style={{ ...body(26, colors.muted), textTransform: 'uppercase', letterSpacing: 2 }}>First big event</Box>
+            <Box style={{ ...headline(fitSize(nextEvent.name, inner - 100, 56, 0.48)), marginTop: 10 }}>{nextEvent.name}</Box>
+            <Box style={{ ...body(32, colors.muted), marginTop: 8 }}>{eventSubtitle(nextEvent)}</Box>
+          </Box>
+        ) : null}
+      </Box>
+    </Frame>
+  );
+
+  return [cover, whatWePost, whatIsRlcs];
+}

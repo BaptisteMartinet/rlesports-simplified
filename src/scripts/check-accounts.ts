@@ -2,13 +2,16 @@
 //
 //   npm run check:accounts
 //   npm run check:accounts -- --publish-welcome-story   also publishes the welcome story (first real test)
+//   npm run check:accounts -- --publish-welcome-post    also publishes the welcome carousel (feed + caption test)
 //
 // Reads IG_ACCESS_TOKEN and CLOUDINARY_URL from the environment.
 import { parseCloudinaryUrl, ping } from '../publish/cloudinary.ts';
 import { createPublisher } from '../publish/index.ts';
 import { instagramClient } from '../publish/instagram.ts';
 import { toJpeg } from '../render/index.ts';
-import { welcomeStory } from '../render/templates.tsx';
+import { welcomeCarousel, welcomeStory } from '../render/templates.tsx';
+import { welcomeCaption } from '../captions.ts';
+import { nextBigEvent } from '../data/index.ts';
 
 let failed = false;
 let account: { userId: string; username: string } | undefined;
@@ -49,4 +52,12 @@ if (process.argv.includes('--publish-welcome-story')) {
   const publisher = await createPublisher(account);
   const id = await publisher.publish({ format: 'story', images: [await toJpeg(welcomeStory())] });
   console.log(`✔ Welcome story published (media ${id}). Check it in the Instagram app.`);
+}
+
+if (process.argv.includes('--publish-welcome-post')) {
+  const next = await nextBigEvent();
+  const publisher = await createPublisher(account);
+  const images = await Promise.all(welcomeCarousel(next).map(toJpeg));
+  const id = await publisher.publish({ format: 'feed', images, caption: welcomeCaption(next) });
+  console.log(`✔ Welcome carousel published (media ${id}). Pin it to the profile from the Instagram app.`);
 }

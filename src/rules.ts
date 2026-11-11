@@ -63,7 +63,8 @@ interface Candidate {
   content: PostContent;
 }
 
-const isBigEvent = (e: RlEvent) => e.status === 'confirmed' && BIG_EVENT_KINDS.has(e.kind);
+/** Confirmed big LAN event: the single definition used by the rules and by one-off posts. */
+export const isBigEvent = (e: RlEvent) => e.status === 'confirmed' && BIG_EVENT_KINDS.has(e.kind);
 const knownTeams = (m: Match): [string, string] | undefined =>
   m.teams[0] && m.teams[1] ? [m.teams[0], m.teams[1]] : undefined;
 const time = (m: Match) => (m.scheduledAt ? new Date(m.scheduledAt) : undefined);

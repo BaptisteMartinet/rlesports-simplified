@@ -68,9 +68,10 @@ export CLOUDINARY_URL='cloudinary://...'
 npm run check:accounts
 ```
 
-Both lines should show ✔ with your username and Cloudinary cloud name. If the token sees several Instagram accounts, also `export IG_USERNAME=rlesports_simplified`. Then publish the welcome story, which is also the first real publishing test:
+Both lines should show ✔ with your username and Cloudinary cloud name. If the token sees several Instagram accounts, also `export IG_USERNAME=rlesports_simplified`. Then publish the welcome carousel and the welcome story, the first real publishing tests. The carousel is the first feed post, so it checks that path before the first scheduled one (the Dec 1 roundup); pin it to the profile afterwards (⋯ → Pin to your profile). On Instagram, check that the carousel shows its 3 slides with the caption. After both, Cloudinary's Media Library should be empty: the bot deletes each image once Instagram has it.
 
 ```sh
+npm run check:accounts -- --publish-welcome-post
 npm run check:accounts -- --publish-welcome-story
 ```
 

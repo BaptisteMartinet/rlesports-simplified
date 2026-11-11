@@ -246,7 +246,7 @@ src/
   time.ts           # done: multi-timezone formatting
   state.ts          # done: state/posted.json
   publish/          # done: Cloudinary upload/delete, Instagram containers + publish
-  scripts/check-accounts.ts  # npm run check:accounts [-- --publish-welcome-story]
+  scripts/check-accounts.ts  # npm run check:accounts [-- --publish-welcome-story | --publish-welcome-post]
 data/seasons/rlcs-2027.yml
 state/posted.json
 .github/workflows/

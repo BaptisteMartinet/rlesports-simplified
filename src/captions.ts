@@ -87,3 +87,23 @@ export function buildCaption(post: DuePost, credits: string[]): string | undefin
       return undefined;
   }
 }
+
+/** Caption of the one-off welcome carousel. */
+export function welcomeCaption(nextEvent?: RlEvent): string {
+  return paragraphs(
+    '👋 Welcome to Rocket League Esports Simplified!',
+    'New to Rocket League esports? We make the RLCS easy to follow:',
+    [
+      '📅 Reminders before every big event',
+      '🔥 Big matches between top-10 teams',
+      '🏆 Grand finals and champions',
+      '🕓 Every time in GMT, Paris, New York and LA',
+    ],
+    nextEvent?.startDate && nextEvent.endDate
+      ? `First big event: ${nextEvent.name}, ${formatDateRange(nextEvent.startDate, nextEvent.endDate)}${nextEvent.location ? ` in ${nextEvent.location.city}` : ''}.`
+      : undefined,
+    'Follow and turn on notifications so you never miss a big match.',
+    'Unofficial fan account.',
+    hashtags(nextEvent?.hashtag),
+  );
+}

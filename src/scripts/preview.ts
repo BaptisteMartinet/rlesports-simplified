@@ -4,7 +4,8 @@ import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { buildCaption } from '../captions.ts';
 import type { Match, RlEvent } from '../data/types.ts';
 import { renderPost, toJpeg } from '../render/index.ts';
-import { profilePicture, welcomeStory } from '../render/templates.tsx';
+import { profilePicture, welcomeCarousel, welcomeStory } from '../render/templates.tsx';
+import { welcomeCaption } from '../captions.ts';
 import type { DuePost, PostContent, PostFormat } from '../rules.ts';
 
 const OUT = 'out/preview';
@@ -73,4 +74,8 @@ for (const [name, formats, content] of samples) {
 }
 await writeFile(`${OUT}/profile-picture.jpg`, await toJpeg(profilePicture()));
 await writeFile(`${OUT}/welcome-story.jpg`, await toJpeg(welcomeStory()));
+for (const [i, slide] of welcomeCarousel(london).entries()) {
+  await writeFile(`${OUT}/welcome-post-${i + 1}.jpg`, await toJpeg(slide));
+}
+await writeFile(`${OUT}/welcome-post.txt`, welcomeCaption(london));
 console.log(`Preview written to ${OUT}/`);
