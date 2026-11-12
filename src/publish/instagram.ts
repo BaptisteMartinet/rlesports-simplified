@@ -93,16 +93,13 @@ export function instagramClient(accessToken: string, { pollMs = 5_000, maxWaitMs
         if (accounts.length > 0) break;
         if (attempt < 3) await new Promise((r) => setTimeout(r, attempt * 3_000));
       }
-      const wanted = process.env.IG_USERNAME?.replace(/^@/, '');
-      const account = wanted ? accounts.find((a) => a.username === wanted) : accounts[0];
-      if (!account) {
+      const [account] = accounts;
+      if (!account) throw new Error('No Instagram account is assigned to this token (set IG_USER_ID to skip this lookup)');
+      if (accounts.length > 1) {
         throw new Error(
-          accounts.length === 0
-            ? 'No Instagram account is assigned to this token (set IG_USER_ID to skip this lookup)'
-            : `@${wanted} is not among the accounts of this token: ${accounts.map((a) => `@${a.username}`).join(', ')}`,
+          `Several Instagram accounts on this token (${accounts.map((a) => `@${a.username} = ${a.id}`).join(', ')}): set IG_USER_ID to the right one`,
         );
       }
-      if (!wanted && accounts.length > 1) throw new Error('Several Instagram accounts on this token: set IG_USERNAME');
       return { userId: account.id, username: String(account.username) };
     },
 

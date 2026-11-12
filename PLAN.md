@@ -210,7 +210,6 @@ Majors and a World Championship in 2027 are not officially confirmed (only a tic
   - `IG_ACCESS_TOKEN`
   - `CLOUDINARY_URL`
   - `IG_USER_ID` (recommended): the Instagram account ID. The bot then skips looking the account up from the token, which Meta sometimes answers with an empty list.
-  - `IG_USERNAME` (optional): only if the token sees several accounts and `IG_USER_ID` isn't set.
 
 ## Fully automatic: safeguards
 
